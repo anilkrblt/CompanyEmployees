@@ -1,10 +1,16 @@
 using CompanyEmployees.Extensions;
 using Microsoft.AspNetCore.HttpOverrides;
+using NLog; 
 
 var builder = WebApplication.CreateBuilder(args);
 
+LogManager.LoadConfiguration(string.Concat(Directory.GetCurrentDirectory(), "/nlog.config"));
+
+
 builder.Services.ConfigureCors();
 builder.Services.ConfigureIISIntegration();
+builder.Services.ConfigureLoggerService();
+
 
 // add services to container
 builder.Services.AddControllers();
@@ -36,8 +42,39 @@ app.UseCors("CorsPolicy");
 // IApplicationBuilder to enable authorization capabilities.
 app.UseAuthorization();
 
+
+/*
+app.Use(async (context, next) => 
+{ 
+Console.WriteLine($"Logic before executing the next delegate in the Use method"); 
+await next.Invoke(); 
+Console.WriteLine($"Logic after executing the next delegate in the Use method"); 
+}); 
+app.Run(async context => 
+{ 
+Console.WriteLine($"Writing the response to the client in the Run method"); 
+await context.Response.WriteAsync("Hello from the middleware component."); 
+}); 
+*/
+
+
 app.MapControllers();
 
-// app.MapGet("/", () => "Hello World!"); böyle custom pipeline oluşturabiliriz
+
 
 app.Run();
+
+
+// http istek sırası
+// Exception Handler -> HSTS -> HttpsRedirection -> Static Files -> Routing -> CORS -> Authentication -> Authorization -> custom middleware
+// app.MapGet("/", () => "Hello World!"); böyle custom pipeline oluşturabiliriz
+// terminal metod
+/*
+app.Run(async context => 
+{ 
+await context.Response.WriteAsync("Hello from the middleware component."); 
+});
+*/
+
+
+
