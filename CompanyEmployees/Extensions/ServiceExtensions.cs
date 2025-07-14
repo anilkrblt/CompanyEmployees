@@ -4,11 +4,32 @@ using System.Linq;
 using System.Threading.Tasks;
 using Contracts;
 using LoggerService;
+using Microsoft.EntityFrameworkCore;
+using Repository;
+using Service;
+using Service.Contracts;
 
 namespace CompanyEmployees.Extensions
 {
     public static class ServiceExtensions
     {
+        public static void ConfigureMySqlContext(
+            this IServiceCollection services,
+            IConfiguration configuration
+        ) =>
+            services.AddDbContext<RepositoryContext>(opts =>
+                opts.UseMySql(
+                    configuration.GetConnectionString("mysqlConnection"),
+                    new MySqlServerVersion(new Version(8, 0, 36))
+                )
+            );
+
+        public static void ConfigureServiceManager(this IServiceCollection services) =>
+            services.AddScoped<IServiceManager, ServiceManager>();
+
+        public static void ConfigureRepositoryManager(this IServiceCollection services) =>
+            services.AddScoped<IRepositoryManager, RepositoryManager>();
+
         public static void ConfigureLoggerService(this IServiceCollection services) =>
             services.AddSingleton<ILoggerManager, LoggerManager>();
 
