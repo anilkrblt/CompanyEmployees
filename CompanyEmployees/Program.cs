@@ -1,4 +1,5 @@
 using CompanyEmployees.Extensions;
+using Contracts;
 using Microsoft.AspNetCore.HttpOverrides;
 using NLog;
 
@@ -15,15 +16,19 @@ builder.Services.ConfigureRepositoryManager();
 builder.Services.ConfigureServiceManager();
 builder.Services.AddAutoMapper(typeof(Program));
 
-
 // add services to container
 builder
     .Services.AddControllers()
     .AddApplicationPart(typeof(CompanyEmployees.Presentation.AssemblyReference).Assembly);
 
 var app = builder.Build();
-if (app.Environment.IsDevelopment())
-    app.UseDeveloperExceptionPage();
+// hizmeti yukarıdaki satırdan sonra çıkarmak önemli çünkü build metodu
+// WebApplication u oluşturur ve eklenen tüm hizmetleri IOC ile kaydeder
+var logger = app.Services.GetRequiredService<ILoggerManager>();
+app.ConfigureExceptionHandler(logger);
+
+if (app.Environment.IsDevelopment()) ;
+// app.UseDeveloperExceptionPage();
 else
     // app.UseHsts() will add middleware for using HSTS, which adds the
     // Strict-Transport-Security header.
@@ -105,8 +110,6 @@ app.Map(
     }
 );
 */
-
-
 
 /*
     dotnet IOC conteynerine üç şekilde ekleme yapılır:

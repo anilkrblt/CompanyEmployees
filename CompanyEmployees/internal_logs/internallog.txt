@@ -380,3 +380,28 @@
 2025-08-03 14:12:47.4492 Trace  Scanning Property Layout '${longdate} ${level:uppercase=true} ${message}' NLog.Layouts.Layout
 2025-08-03 14:12:47.4492 Trace FileTarget(Name=logfile) has 2 layouts
 2025-08-03 14:12:47.4492 Info Configuration initialized.
+2025-08-03 18:46:28.8969 Info AppDomain Shutting down. LogFactory closing...
+2025-08-03 18:46:28.8969 Debug LogFactory Starting Flush with timeout=1.5 secs
+2025-08-03 18:46:28.8969 Trace Flushing all 1 targets...
+2025-08-03 18:46:28.9180 Trace FileTarget(Name=logfile): FlushAsync
+2025-08-03 18:46:28.9180 Debug Flush completed
+2025-08-03 18:46:28.9180 Trace FileTarget(Name=logfile): FlushAsync Done
+2025-08-03 18:46:28.9180 Debug Unregistered shutdown event handler for ProcessExit.
+2025-08-03 18:46:28.9180 Info AutoReload Config File Monitor stopping, since no active configuration
+2025-08-03 18:46:28.9180 Debug Stop watching file-filter 'nlog.config' in directory: C:\Users\ACER\Desktop\CompanyEmployees\CompanyEmployees
+2025-08-03 18:46:28.9180 Debug Closing logging configuration...
+2025-08-03 18:46:28.9180 Trace Closing FileTarget(Name=logfile)
+2025-08-03 18:46:28.9180 Debug FileTarget(Name=logfile): Closing...
+2025-08-03 18:46:28.9339 Debug FileTarget(Name=logfile): Closed.
+2025-08-03 18:46:28.9339 Trace Closing .\logs\${shortdate}_logfile.txt
+2025-08-03 18:46:28.9339 Trace Closing Layout Renderer: ${literal}
+2025-08-03 18:46:28.9339 Trace Closing Layout Renderer: ${shortdate}
+2025-08-03 18:46:28.9339 Trace Closing Layout Renderer: ${literal}
+2025-08-03 18:46:28.9339 Trace Closing ${longdate} ${level:uppercase=true} ${message}
+2025-08-03 18:46:28.9339 Trace Closing Layout Renderer: ${longdate}
+2025-08-03 18:46:28.9339 Trace Closing Layout Renderer: ${literal}
+2025-08-03 18:46:28.9339 Trace Closing Layout Renderer: ${level}
+2025-08-03 18:46:28.9339 Trace Closing Layout Renderer: ${literal}
+2025-08-03 18:46:28.9339 Trace Closing Layout Renderer: ${message}
+2025-08-03 18:46:28.9339 Debug Finished closing logging configuration.
+2025-08-03 18:46:28.9339 Info LogFactory has been disposed.
