@@ -19,9 +19,15 @@ namespace CompanyEmployees
                     opt => opt.MapFrom(x => x.Address + " " + x.Country)
                 );
             */
+            /*
             CreateMap<Company, CompanyDto>()
                 .ForCtorParam("FullAddress", opt => opt.MapFrom(x => x.Address + " " + x.Country));
-                
+            */
+            CreateMap<Company, CompanyDto>()
+                .ForMember(
+                    c => c.FullAddress,
+                    opt => opt.MapFrom(x => x.Address + " " + x.Country)
+                );
             CreateMap<Employee, EmployeeDto>();
         }
     }

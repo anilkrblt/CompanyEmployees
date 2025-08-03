@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using CompanyEmployees.Formatters;
 using Contracts;
 using LoggerService;
 using Microsoft.EntityFrameworkCore;
@@ -24,6 +25,9 @@ namespace CompanyEmployees.Extensions
                 )
             );
 
+        public static IMvcBuilder AddCustomCSVFormatter(this IMvcBuilder builder) =>
+            builder.AddMvcOptions(config => config.OutputFormatters.Add(new CsvOutputFormatter()));
+
         public static void ConfigureServiceManager(this IServiceCollection services) =>
             services.AddScoped<IServiceManager, ServiceManager>();
 
@@ -39,7 +43,7 @@ namespace CompanyEmployees.Extensions
                 options.AutomaticAuthentication = true;
                 options.AuthenticationDisplayName = null;
                 options.ForwardClientCertificate = true;
-             });
+            });
 
         public static void ConfigureCors(this IServiceCollection services) =>
             services.AddCors(options =>

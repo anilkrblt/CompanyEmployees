@@ -1,4 +1,10 @@
 namespace Shared.DataTransferObjects
 {
-    public record CompanyDto(Guid Id, string Name, string FullAddress);
+    //[Serializable] xml için serializable yapıyor ama nesne isimler tırt geliyor
+    public record CompanyDto
+    {
+        public Guid Id { get; init; }
+        public string? Name { get; set; }
+        public string? FullAddress { get; set; }
+    }
 }

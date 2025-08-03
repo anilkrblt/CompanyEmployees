@@ -18,16 +18,24 @@ builder.Services.AddAutoMapper(typeof(Program));
 
 // add services to container
 builder
-    .Services.AddControllers()
+    .Services.AddControllers(config =>
+    {
+        config.RespectBrowserAcceptHeader = true; // Accept headerin değerini umursar hale getirir böylece xml yanıt dönebiliriz.
+        config.ReturnHttpNotAcceptable = true; // Bilinmeyen Accept değerleri için 406 Not Acceptable hatası döner
+    })
+    .AddXmlDataContractSerializerFormatters()
+    .AddCustomCSVFormatter()
     .AddApplicationPart(typeof(CompanyEmployees.Presentation.AssemblyReference).Assembly);
 
 var app = builder.Build();
+
 // hizmeti yukarıdaki satırdan sonra çıkarmak önemli çünkü build metodu
 // WebApplication u oluşturur ve eklenen tüm hizmetleri IOC ile kaydeder
 var logger = app.Services.GetRequiredService<ILoggerManager>();
 app.ConfigureExceptionHandler(logger);
 
-if (app.Environment.IsDevelopment()) ;
+if (app.Environment.IsDevelopment())
+    ;
 // app.UseDeveloperExceptionPage();
 else
     // app.UseHsts() will add middleware for using HSTS, which adds the
