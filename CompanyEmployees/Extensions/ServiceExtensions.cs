@@ -34,7 +34,12 @@ namespace CompanyEmployees.Extensions
             services.AddSingleton<ILoggerManager, LoggerManager>();
 
         public static void ConfigureIISIntegration(this IServiceCollection services) =>
-            services.Configure<IISOptions>(options => { });
+            services.Configure<IISOptions>(options =>
+            {
+                options.AutomaticAuthentication = true;
+                options.AuthenticationDisplayName = null;
+                options.ForwardClientCertificate = true;
+             });
 
         public static void ConfigureCors(this IServiceCollection services) =>
             services.AddCors(options =>
@@ -45,8 +50,8 @@ namespace CompanyEmployees.Extensions
                         builder
                             .AllowAnyOrigin() //  WithOrigins("https://example.com")
                             .AllowAnyMethod() // WithMethods("POST", "GET")
-                            .AllowAnyHeader()
-                ); // WithHeaders("accept", "content-type")
+                            .AllowAnyHeader() // WithHeaders("accept", "content-type")
+                );
             });
     }
 }

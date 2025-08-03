@@ -11,3 +11,5 @@ obj/
 ## Visual Studio Code
 .vscode/
 
+
+.fake

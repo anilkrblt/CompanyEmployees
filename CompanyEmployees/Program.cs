@@ -10,13 +10,16 @@ builder.Services.ConfigureCors();
 builder.Services.ConfigureIISIntegration();
 builder.Services.ConfigureLoggerService();
 
-
 builder.Services.ConfigureMySqlContext(builder.Configuration);
-builder.Services.ConfigureServiceManager();
 builder.Services.ConfigureRepositoryManager();
+builder.Services.ConfigureServiceManager();
+builder.Services.AddAutoMapper(typeof(Program));
+
 
 // add services to container
-builder.Services.AddControllers();
+builder
+    .Services.AddControllers()
+    .AddApplicationPart(typeof(CompanyEmployees.Presentation.AssemblyReference).Assembly);
 
 var app = builder.Build();
 if (app.Environment.IsDevelopment())
@@ -61,8 +64,15 @@ await context.Response.WriteAsync("Hello from the middleware component.");
 
 app.MapControllers();
 
-app.Run();
+/*
+app.MapAreaControllerRoute(
+    name: "default",
+    pattern: "{controller=Home}/{action=Index}/{id?}"
+);
+app.UseRouting();
+*/
 
+app.Run();
 
 // http istek sırası
 // Exception Handler -> HSTS -> HttpsRedirection -> Static Files -> Routing -> CORS -> Authentication -> Authorization -> custom middleware
@@ -73,4 +83,38 @@ app.Run(async context =>
 {
 await context.Response.WriteAsync("Hello from the middleware component.");
 });
+*/
+/* Map metodundan sonra eklenen herhangi bir middleware çalışmaz
+app.Map(
+    "/usingmapbranch",
+    builder =>
+    {
+        builder.Use(
+            async (context, next) =>
+            {
+                Console.WriteLine("map branch logic in the use method before next delegate");
+                await next.Invoke();
+                Console.WriteLine("map branch logic in the use method after next delegate");
+            }
+        );
+        builder.Run(async context =>
+        {
+            Console.WriteLine("writing the rosponse to the client in the run method");
+            await context.Response.WriteAsync("Hello from the middleware component");
+        });
+    }
+);
+*/
+
+
+
+/*
+    dotnet IOC conteynerine üç şekilde ekleme yapılır:
+    services.AddSingleon => bir kere servisi oluşturur ve tüm istekler aynı servisi kullanır
+
+    services.AddScoped => bir HTTP isteği gönderdiğimizde hizmetin yeni bir örneği oluşturulur
+
+    services.AddTransient => uygulamaya her istek geldiğinde yeniden yaratılır, birden fazla bileşenin
+    bu hizmete ihtiyacı varsa her bir bileşen talebi için hizmetin yeniden oluşturulacağı anlamına gelir
+
 */
