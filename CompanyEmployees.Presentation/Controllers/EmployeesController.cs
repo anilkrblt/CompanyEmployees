@@ -1,9 +1,6 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Service.Contracts;
+using Shared.DataTransferObjects;
 
 namespace CompanyEmployees.Presentation.Controllers
 {
@@ -25,15 +22,48 @@ namespace CompanyEmployees.Presentation.Controllers
             return Ok(employees);
         }
 
-        [HttpGet("{id:guid}")]
-        public IActionResult GetEmployeeForCompany(Guid companyId, Guid employeeId)
+        [HttpGet("{employeeId:guid}", Name = "GetEmployeeForCompany")]
+        public IActionResult GetEmployeeForCompany([FromRoute] Guid companyId, Guid employeeId)
         {
             var employee = _service.EmployeeService.GetEmployee(
                 companyId,
                 employeeId,
                 trackChanges: false
             );
+
             return Ok(employee);
+        }
+
+        [HttpPost]
+        public IActionResult CreateEmployeeForCompany(
+            [FromRoute] Guid companyId,
+            [FromBody] EmployeeForCreationDto employee
+        )
+        {
+            if (employee is null)
+                return BadRequest("EmployeeForCreationDto object is null");
+
+            var employeeToReturn = _service.EmployeeService.CreateEmployeeForCompany(
+                companyId,
+                employee,
+                trackChanges: false
+            );
+            return CreatedAtRoute(
+                "GetEmployeeForCompany",
+                new { companyId, employeeId = employeeToReturn.Id },
+                employeeToReturn
+            );
+        }
+
+        [HttpDelete("{employeeId:guid}")]
+        public IActionResult DeleteEmployeeForCompany(Guid companyId, Guid employeeId)
+        {
+            _service.EmployeeService.DeleteEmployeeForCompany(
+                companyId,
+                employeeId,
+                trackChanges: false
+            );
+            return NoContent();
         }
     }
 }

@@ -7,4 +7,11 @@ namespace Shared.DataTransferObjects
         public string? Name { get; set; }
         public string? FullAddress { get; set; }
     }
+
+    public record CompanyForCreationDto(
+        string Name,
+        string Address,
+        string Country,
+        IEnumerable<EmployeeForCreationDto> Employees
+    );
 }

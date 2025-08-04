@@ -8,6 +8,17 @@ namespace Repository
         public EmployeeRepository(RepositoryContext repositoryContext)
             : base(repositoryContext) { }
 
+        public void CreateEmployeeForCompany(Guid companyId, Employee employee)
+        {
+            employee.CompanyId = companyId;
+            Create(employee);
+        }
+
+        public void DeleteEmployee(Employee employee)
+        {
+            Delete(employee);
+        }
+
         public Employee GetEmployee(Guid companyId, Guid employeeId, bool trackChanges)
         {
             return FindByCondition(
