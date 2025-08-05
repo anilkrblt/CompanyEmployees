@@ -44,6 +44,11 @@ namespace CompanyEmployees.Presentation.Controllers
             if (employee is null)
                 return BadRequest("EmployeeForCreationDto object is null");
 
+            if (!ModelState.IsValid)
+                return UnprocessableEntity(ModelState);
+
+            // ek model hatası ekleme ModelState.AddModelError()
+
             var employeeToReturn = _service.EmployeeService.CreateEmployeeForCompany(
                 companyId,
                 employee,
@@ -77,6 +82,9 @@ namespace CompanyEmployees.Presentation.Controllers
             if (employee is null)
                 return BadRequest("EmployeeForUpdateDto object is null");
 
+            if (!ModelState.IsValid)
+                return UnprocessableEntity(ModelState);
+
             _service.EmployeeService.UpdateEmployeeForCompany(
                 companyId,
                 id,
@@ -103,7 +111,12 @@ namespace CompanyEmployees.Presentation.Controllers
                 compTrackChanges: false,
                 empTrackChanges: true
             );
-            patchDoc.ApplyTo(result.employeeToPatch);
+            patchDoc.ApplyTo(result.employeeToPatch, ModelState);
+
+            TryValidateModel(result.employeeToPatch);
+
+            if (!ModelState.IsValid)
+                return UnprocessableEntity(ModelState);
             _service.EmployeeService.SaveChangesForPatch(
                 result.employeeToPatch,
                 result.employeeEntity

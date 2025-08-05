@@ -77,3 +77,23 @@ namespace CompanyEmployees.Presentation.Controllers
         }
     }
 }
+
+
+/*
+[HttpPost]
+public IActionResult POST([FromBody] Book book)
+{
+    if (!ModelState.IsValid)
+    return UnprocessableEntity(ModelState);
+    var newPrice = book.Price - 10;
+    book.Price = newPrice;
+    
+    ModelState.ClearValidationState(nameof(Book));
+    if (!TryValidateModel(book, nameof(Book)))
+    return UnprocessableEntity(ModelState);
+    
+    _service.CreateBook(book);
+    
+    return CreatedAtRoute("BookById", new { id = book.Id }, book);
+}
+*/
