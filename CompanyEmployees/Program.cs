@@ -1,4 +1,5 @@
 using CompanyEmployees.Extensions;
+using CompanyEmployees.Presentation.ActionFilters;
 using Contracts;
 using Microsoft.AspNetCore.HttpOverrides;
 using Microsoft.AspNetCore.Mvc;
@@ -45,6 +46,8 @@ builder
     .AddXmlDataContractSerializerFormatters()
     .AddCustomCSVFormatter()
     .AddApplicationPart(typeof(CompanyEmployees.Presentation.AssemblyReference).Assembly);
+
+builder.Services.AddScoped<ValidationFilterAttribute>();
 
 var app = builder.Build();
 
