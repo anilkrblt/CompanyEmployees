@@ -1,5 +1,6 @@
 using Contracts;
 using Entities.Models;
+using Shared.RequestFeatures;
 
 namespace Repository
 {
@@ -28,11 +29,15 @@ namespace Repository
                 .SingleOrDefault();
         }
 
-        public IEnumerable<Employee> GetEmployees(Guid companyId, bool trackChanges)
-        {
-            return FindByCondition(e => e.CompanyId.Equals(companyId), trackChanges)
+        public IEnumerable<Employee> GetEmployees(
+            Guid companyId,
+            EmployeeParameters employeeParameters,
+            bool trackChanges
+        ) =>
+            FindByCondition(e => e.CompanyId.Equals(companyId), trackChanges)
                 .OrderBy(e => e.Name)
+                .Skip((employeeParameters.PageNumber - 1) * employeeParameters.PageSize)
+                .Take(employeeParameters.PageSize)
                 .ToList();
-        }
     }
 }
